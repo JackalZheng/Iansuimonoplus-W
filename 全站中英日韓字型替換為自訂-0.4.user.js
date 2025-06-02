@@ -1,170 +1,110 @@
 // ==UserScript==
-// @name         全站中英日韓字型替換為自訂
+// @name         全站字型替換
 // @namespace    http://tampermonkey.net/
-// @version      0.4
+// @version      1.2
+// @description  全站中英日韓字型統一為 Iansuimonoplus-W，排除 icon 與編輯頁面，字體比原本大2px
 // @author       J
-// @description  強制中英日韓字型為 Iansuimonoplus-W，排除 icon 與符號元素，字級動態調整(+2px)，字體平滑，支援 SPA，避免重複處理與字體越加越大問題
 // @match        *://*/*
 // @grant        GM_addStyle
-// @run-at       document-end
 // ==/UserScript==
 
-(function () {
+(function() {
     'use strict';
 
-    // 判斷是否為中英日韓文字
-    function isCJKorLatin(char) {
-        const code = char.charCodeAt(0);
-        return (
-            (code >= 0x4E00 && code <= 0x9FFF) || // 中文
-            (code >= 0x3040 && code <= 0x30FF) || // 日文
-            (code >= 0xAC00 && code <= 0xD7AF) || // 韓文
-            (code >= 0x0020 && code <= 0x007E)    // 英文
-        );
-    }
+    // 排除編輯頁面
+    const editPattern = /\/(edit|editor|write|compose|admin|dashboard|blob)\b/i;
+    if (editPattern.test(location.pathname)) return;
 
-    // 判斷是否為符號或 emoji
-    function isSymbolOrIcon(char) {
-        const code = char.charCodeAt(0);
-        return (
-            (code >= 0x2000 && code <= 0x2FFF) ||
-            (code >= 0x3000 && code <= 0x303F) ||
-            (code >= 0x1F000 && code <= 0x1FAFF) ||
-            (code >= 0x2600 && code <= 0x27BF)
-        );
-    }
-
-    // 判斷是否含有 icon 類別
-    function hasIconClass(node) {
-        if (!node.classList) return false;
-        const iconKeywords = ['icon', 'fa', 'material', 'glyph', 'map', 'emoji', 'sprite', 'logo', 'iconfont', 'gm2'];
-        return [...node.classList].some(cls =>
-            iconKeywords.some(kw => cls.toLowerCase().includes(kw))
-        );
-    }
-
-    const excludedTags = new Set(['SCRIPT', 'STYLE', 'TEXTAREA', 'CODE', 'PRE', 'IMG', 'SVG', 'BUTTON', 'INPUT']);
-
-    // 記錄原始字體大小，避免重複遞增
-    function getOriginalFontSize(element) {
-        if (!element) return 16;
-        const recorded = element.getAttribute('data-original-font-size');
-        if (recorded) return parseFloat(recorded);
-        const size = parseFloat(window.getComputedStyle(element).fontSize || '16');
-        element.setAttribute('data-original-font-size', size);
-        return size;
-    }
-
-    // 根據分類包裝文字段落
-    function wrapBuffer(text, type, fontSize) {
-        if (!text) return '';
-        if (type === 'target') {
-            const span = document.createElement('span');
-            span.textContent = text;
-            span.setAttribute('data-font-processed', 'true');
-            span.setAttribute('style', `
-                font-family: 'Iansuimonoplus-W', 'Microsoft JhengHei', 'Noto Sans CJK TC', sans-serif;
-                src: local('Iansuimonoplus-W'), url('https://github.com/JackalZheng/Iansuimonoplus-W/raw/refs/heads/main/Iansuimonoplus-W-Regular.woff2') format('woff2');
-                font-size: ${fontSize}px !important;
-                -webkit-font-smoothing: antialiased;
-                -moz-osx-font-smoothing: grayscale;
-            `);
-            return span.outerHTML;
-        }
-        return text;
-    }
-
-    // 遞迴遍歷節點
-    function traverseNodes(node) {
-        if (node.nodeType === Node.TEXT_NODE) {
-            const parent = node.parentNode;
-            if (!parent || parent.hasAttribute('data-font-processed')) return;
-            if (hasIconClass(parent) || excludedTags.has(parent.nodeName)) return;
-            if (!/[A-Za-z0-9\u4E00-\u9FFF\u3040-\u30FF\uAC00-\uD7AF]/.test(node.nodeValue)) return;
-
-            const originalSize = getOriginalFontSize(parent);
-            const newFontSize = originalSize + 2;
-            const text = node.nodeValue;
-
-            let html = '';
-            let buffer = '';
-            let lastType = null;
-
-            for (const char of text) {
-                const isTarget = isCJKorLatin(char);
-                const isSymbol = isSymbolOrIcon(char);
-                const type = isSymbol ? 'symbol' : isTarget ? 'target' : 'other';
-
-                if (type === lastType || lastType === null) {
-                    buffer += char;
-                } else {
-                    html += wrapBuffer(buffer, lastType, newFontSize);
-                    buffer = char;
-                }
-                lastType = type;
-            }
-            html += wrapBuffer(buffer, lastType, newFontSize);
-
-            if (html !== text) {
-                const wrapper = document.createElement('span');
-                wrapper.innerHTML = html;
-                wrapper.setAttribute('data-font-processed', 'true');
-                parent.replaceChild(wrapper, node);
-                return;
-            }
-
-        } else if (node.nodeType === Node.ELEMENT_NODE) {
-            if (excludedTags.has(node.nodeName)) return;
-            if (hasIconClass(node)) return;
-            if (node.hasAttribute('data-font-processed')) return;
-
-            for (let i = 0; i < node.childNodes.length; i++) {
-                traverseNodes(node.childNodes[i]);
-            }
-        }
-    }
-
-    // 全站強制 CSS
+    // 注入自訂字型
     GM_addStyle(`
-        html, body, *:not(i):not(svg):not([role="img"]):not([aria-hidden="true"]):not([class*="icon"]):not([class*="material-icons"]) {
-            font-family: "Iansuimonoplus-W", "Microsoft JhengHei", "Noto Sans CJK TC", sans-serif !important;
-            src: local('Iansuimonoplus-W'), url('https://github.com/JackalZheng/Iansuimonoplus-W/raw/refs/heads/main/Iansuimonoplus-W-Regular.woff2') format('woff2');
-            -webkit-font-smoothing: antialiased !important;
-            -moz-osx-font-smoothing: grayscale !important;
-        }
+    @font-face {
+        font-family: 'Iansuimonoplus-W';
+        src: local('Iansuimonoplus-W'),
+             url('https://github.com/JackalZheng/Iansuimonoplus-W/raw/refs/heads/main/Iansuimonoplus-W-Regular.woff2') format('woff2');
+        font-display: swap;
+        unicode-range: U+0020-007E, U+00A0-00FF, U+2E80-2EFF, U+3000-303F, U+3040-309F, U+30A0-30FF, U+4E00-9FFF, U+AC00-D7AF;
+    }
     `);
 
-    // 初始化處理
-    function applyToPage() {
-        traverseNodes(document.body);
+    // 排除常見 icon/symbol 字型與 class
+    const iconFontFamilies = [
+        'FontAwesome', 'Material Icons', 'Material Symbols', 'Ionicons', 'iconfont', 'Glyphicons', 'Segoe UI Symbol',
+        'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'Twemoji', 'EmojiOne', 'Symbola',
+        'Google Sans', 'Product Sans', 'Roboto'
+    ];
+    const iconFontSelector = iconFontFamilies.map(f =>
+        `[style*="font-family:${f}"]`
+    ).join(',');
+    const iconClassSelector = [
+        '[class*="icon"]',
+        '[class*="symbol"]',
+        '[class*="fa-"]',
+        '[class*="material-icons"]',
+        '[class*="gm2-"]',
+        '[class*="maps-sprite"]'
+    ].join(',');
+
+    // 只針對常見文字元素
+    const textElements = [
+        'body', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'info',
+        'li', 'td', 'th', 'label', 'a', 'div', 'input', 'textarea', 'button', 'span'
+    ].join(',');
+
+    // 字型與平滑設定
+    GM_addStyle(`
+    ${textElements}:not(${iconFontSelector}):not(${iconClassSelector}) {
+        font-family: 'Iansuimonoplus-W', 'Noto Sans CJK TC', 'Noto Sans', 'Microsoft JhengHei', 'Arial', 'sans-serif' !important;
+        -webkit-font-smoothing: antialiased !important;
+        -moz-osx-font-smoothing: grayscale !important;
+        text-rendering: optimizeLegibility !important;
+    }
+    `);
+
+    // 動態加大 2px
+    function enlargeFont(node) {
+        // 排除 icon/symbol
+        if (
+            node.nodeType !== 1 ||
+            node.matches(iconFontSelector) ||
+            node.matches(iconClassSelector)
+        ) return;
+
+        // 只處理常見文字元素
+        if (!node.matches(textElements)) return;
+
+        const style = window.getComputedStyle(node);
+        // 跳過已經被設過的
+        if (node.dataset.fontEnlarged === "1") return;
+        // 跳過隱藏元素
+        if (style.display === "none" || style.visibility === "hidden") return;
+
+        // 取得原始字級
+        let size = style.fontSize;
+        if (!size.endsWith('px')) return; // 只處理 px 單位
+        let px = parseFloat(size);
+        if (isNaN(px)) return;
+        node.style.fontSize = (px + 0.5) + "px";
+        node.dataset.fontEnlarged = "1";
     }
 
-    if (document.readyState === 'complete' || document.readyState === 'interactive') {
-        applyToPage();
-    } else {
-        window.addEventListener('DOMContentLoaded', applyToPage);
+    // 初始處理
+    function processAll() {
+        document.querySelectorAll(textElements).forEach(enlargeFont);
     }
 
-    // MutationObserver - 僅監聽新增節點
-    let scheduled = false;
+    // 監聽 DOM 變動
     const observer = new MutationObserver(mutations => {
-        if (scheduled) return;
-        scheduled = true;
-        setTimeout(() => {
-            for (const mutation of mutations) {
-                for (const node of mutation.addedNodes) {
-                    if (node.nodeType === Node.ELEMENT_NODE) {
-                        traverseNodes(node);
-                    }
+        for (const m of mutations) {
+            m.addedNodes.forEach(node => {
+                if (node.nodeType === 1) {
+                    if (node.matches(textElements)) enlargeFont(node);
+                    node.querySelectorAll && node.querySelectorAll(textElements).forEach(enlargeFont);
                 }
-            }
-            scheduled = false;
-        }, 100);
+            });
+        }
     });
 
-    observer.observe(document.body, {
-        childList: true,
-        subtree: true
-    });
+    processAll();
+    observer.observe(document.body, { childList: true, subtree: true });
 
 })();
