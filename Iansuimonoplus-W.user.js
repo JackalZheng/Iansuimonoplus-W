@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         全站字型替換
 // @namespace    http://tampermonkey.net/
-// @version      1.5
+// @version      1.2
 // @description  全站中英日韓字型統一為 Iansuimonoplus-W，排除 icon 與編輯頁面，字體比原本大2px
 // @author       J
 // @downloadURL  https://github.com/JackalZheng/Iansuimonoplus-W/raw/refs/heads/main/Iansuimonoplus-W.user.js
@@ -30,9 +30,10 @@
 
     // 排除常見 icon/symbol 字型與 class
     const iconFontFamilies = [
-        'FontAwesome', 'Material Icons', 'Material Symbols', 'Ionicons', 'iconfont', 'Glyphicons', 'Segoe UI Symbol',
-        'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'Twemoji', 'EmojiOne', 'Symbola',
-        'Google Sans', 'Product Sans', 'Roboto'
+     'FontAwesome', 'Material Icons', 'Material Symbols', 'Ionicons', 'iconfont',
+     'Glyphicons', 'Segoe UI Symbol', 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji',
+     'Twemoji', 'EmojiOne', 'Symbola', 'Google Sans', 'Product Sans', 'Roboto', 'sans-serif'
+
     ];
     const iconFontSelector = iconFontFamilies.map(f =>
         `[style*="font-family:${f}"]`
@@ -47,20 +48,22 @@
     ].join(',');
 
     // 只針對常見文字元素
-    const textElements = [
-        'body', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'info', "i",
-        'li', 'td', 'th', 'label', 'a', 'div', 'input', 'textarea', 'button', 'span'
-    ].join(',');
+const textElements = [
+  'body', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6','i','info',
+  'li', 'td', 'th', 'label', 'a', 'div', 'input', 'textarea', 'button', 'span',
+  'em', 'strong', 'b', 'u'
+].join(',');
 
     // 字型與平滑設定
-    GM_addStyle(`
-    ${textElements}:not(${iconFontSelector}):not(${iconClassSelector}) {
-        font-family: 'Iansuimonoplus-W', 'Noto Sans CJK TC', 'Noto Sans', 'Microsoft JhengHei', 'Arial', 'sans-serif' !important;
-        -webkit-font-smoothing: antialiased !important;
-        -moz-osx-font-smoothing: grayscale !important;
-        text-rendering: optimizeLegibility !important;
-    }
-    `);
+GM_addStyle(`
+  html, body, p, h1, h2, h3, h4, h5, h6, li, td, th, label, a, div, input, i, info, textarea, button, span, em, strong, b, u {
+    font-family: 'Iansuimonoplus-W', 'Noto Sans CJK TC', 'Noto Sans', 'Microsoft JhengHei', 'Arial', 'sans-serif' ,'Material Icons', 'Google Symbols','Material Symbols', 'FontAwesome', 'Segoe UI Symbol', 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'Twemoji', 'EmojiOne', 'Symbola', sans-serif !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    text-rendering: optimizeLegibility !important;
+  }
+
+`);
 
     // 動態加大 2px
     function enlargeFont(node) {
