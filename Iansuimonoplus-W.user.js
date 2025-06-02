@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         全站字型替換
 // @namespace    http://tampermonkey.net/
-// @version      1.2
+// @version      1.5
 // @description  全站中英日韓字型統一為 Iansuimonoplus-W，排除 icon 與編輯頁面，字體比原本大2px
 // @author       J
 // @downloadURL  https://github.com/JackalZheng/Iansuimonoplus-W/raw/refs/heads/main/Iansuimonoplus-W.user.js
@@ -24,7 +24,7 @@
         src: local('Iansuimonoplus-W'),
              url('https://github.com/JackalZheng/Iansuimonoplus-W/raw/refs/heads/main/Iansuimonoplus-W-Regular.woff2') format('woff2');
         font-display: swap;
-        unicode-range: U+0020-007E, U+00A0-00FF, U+2E80-2EFF, U+3000-303F, U+3040-309F, U+30A0-30FF, U+4E00-9FFF, U+AC00-D7AF;
+        //unicode-range: U+0020-007E, U+00A0-00FF, U+2E80-2EFF, U+3000-303F, U+3040-309F, U+30A0-30FF, U+4E00-9FFF, U+AC00-D7AF;
     }
     `);
 
@@ -48,7 +48,7 @@
 
     // 只針對常見文字元素
     const textElements = [
-        'body', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'info',
+        'body', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'info', "i",
         'li', 'td', 'th', 'label', 'a', 'div', 'input', 'textarea', 'button', 'span'
     ].join(',');
 
