@@ -64,6 +64,7 @@
             span.setAttribute('data-font-processed', 'true');
             span.setAttribute('style', `
                 font-family: 'Iansuimonoplus-W', 'Microsoft JhengHei', 'Noto Sans CJK TC', sans-serif;
+                src: local('Iansuimonoplus-W'), url('https://github.com/JackalZheng/Iansuimonoplus-W/raw/refs/heads/main/Iansuimonoplus-W-Regular.woff2') format('woff2');
                 font-size: ${fontSize}px !important;
                 -webkit-font-smoothing: antialiased;
                 -moz-osx-font-smoothing: grayscale;
@@ -127,6 +128,7 @@
     GM_addStyle(`
         html, body, *:not(i):not(svg):not([role="img"]):not([aria-hidden="true"]):not([class*="icon"]):not([class*="material-icons"]) {
             font-family: "Iansuimonoplus-W", "Microsoft JhengHei", "Noto Sans CJK TC", sans-serif !important;
+            src: local('Iansuimonoplus-W'), url('https://github.com/JackalZheng/Iansuimonoplus-W/raw/refs/heads/main/Iansuimonoplus-W-Regular.woff2') format('woff2');
             -webkit-font-smoothing: antialiased !important;
             -moz-osx-font-smoothing: grayscale !important;
         }
