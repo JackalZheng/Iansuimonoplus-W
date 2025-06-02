@@ -4,6 +4,7 @@
 // @version      1.2
 // @description  全站中英日韓字型統一為 Iansuimonoplus-W，排除 icon 與編輯頁面，字體比原本大2px
 // @author       J
+// @downloadURL https://github.com/JackalZheng/Iansuimonoplus-W/raw/refs/heads/main/Iansuimonoplus-W.user.js
 // @match        *://*/*
 // @grant        GM_addStyle
 // ==/UserScript==
