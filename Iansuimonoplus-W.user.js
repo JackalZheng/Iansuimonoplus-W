@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         全站字型替換
 // @namespace    http://tampermonkey.net/
-// @version      1.6
+// @version      1.2
 // @description  全站中英日韓字型統一為 Iansuimonoplus-W，排除 icon 與編輯頁面，字體比原本大2px
 // @author       J
 // @downloadURL  https://github.com/JackalZheng/Iansuimonoplus-W/raw/refs/heads/main/Iansuimonoplus-W.user.js
@@ -30,7 +30,7 @@
 
     // 排除常見 icon/symbol 字型與 class
     const iconFontFamilies = [
-     'FontAwesome', 'Material Icons', 'Material Symbols', 'Ionicons', 'iconfont',
+     'FontAwesome', 'Material Icons', 'Material Symbols', 'Ionicons', 'iconfont','Google Symbols',
      'Glyphicons', 'Segoe UI Symbol', 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji',
      'Twemoji', 'EmojiOne', 'Symbola', 'Google Sans', 'Product Sans', 'Roboto', 'sans-serif'
 
