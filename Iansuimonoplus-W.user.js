@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Iansuimonoplus-W 全站字型替換
 // @namespace    https://github.com/JackalZheng/Iansuimonoplus-W
-// @version      3.1
-// @description  全站中英日韓字型統一為 Iansuimonoplus-W，支援 emoji，分桌機/手機字體大小，完全避開 icon/symbol 類型字型與 class，排除編輯頁面，動態監控 DOM
+// @version      3.2
+// @description  全站中英日韓字型統一為 Iansuimonoplus-W，支援 emoji，分桌機/手機字體大小，完全避開 icon/symbol 類型字型與 class，排除編輯頁面，動態監控 DOM。
 // @author       JackalZheng
 // @match        *://*/*
 // @run-at       document-start
@@ -14,22 +14,22 @@
   'use strict';
 
   // ====== 可自訂參數區 ======
-        // 字體縮放比例（1為正常大小）
-    const fontScale = 1.0;
-        // 判斷是否為手機
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  // 字體縮放比例（1為正常大小）
+  const fontScale = 1.0;
+  // 判斷是否為手機
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-    // 設定字體大小
-    const fontSize = isMobile ? 'calc(${fontScale} + 0.6px)' : 'calc(${fontScale})';
+  // 設定字體大小
+  const fontSize = isMobile ? 'calc(${fontScale} + 0.6px)' : 'calc(${fontScale})';
 
-    // 字體描邊寬度(px)，0為無描邊
-    const fontStrokeWidth = 0.3;
-    // 字體描邊顏色
-    const fontStrokeColor = 'rgba(0, 0, 0, 0.15)';
-    // 字體陰影，格式：offset-x offset-y blur-radius color
-    const fontShadow = '1px 1px 1.5px rgba(0, 0, 0, 0.25)';
-    // 字體平滑設置，webkit內核支持
-    const fontSmooth = 'subpixel-antialiased'; // 可用值: none, antialiased, subpixel-antialiased
+  // 字體描邊寬度(px)，0為無描邊
+  const fontStrokeWidth = 0.3;
+  // 字體描邊顏色
+  const fontStrokeColor = 'rgba(0, 0, 0, 0.15)';
+  // 字體陰影，格式：offset-x offset-y blur-radius color
+  const fontShadow = '1px 1px 1.5px rgba(0, 0, 0, 0.25)';
+  // 字體平滑設置，webkit內核支持
+  const fontSmooth = 'subpixel-antialiased'; // 可用值: none, antialiased, subpixel-antialiased
 
   const editPageKeywords = [
     'edit', 'editor', 'write', 'compose', 'admin', 'dashboard', 'blob', 'app', 'generate'
@@ -105,7 +105,7 @@
       font-family: "Courier New";
       src: local("Iansuimonoplus-W");
     }
-        @font-face {
+    @font-face {
       font-family: "Courier";
       src: local("Iansuimonoplus-W");
     }
@@ -142,8 +142,8 @@
     );
   }
 
-      // 動態加大字體
-function enlargeFont(node) {
+  // 動態加大字體
+  function enlargeFont(node) {
     // 建立新的樣式表
     const style = document.createElement('style');
     style.type = 'text/css';
@@ -157,8 +157,7 @@ function enlargeFont(node) {
 
     // 將樣式表加入到頁面中
     document.head.appendChild(style);
-}
-
+  }
 
   // 判斷是否含有 icon/symbol 相關 class
   function hasIconClass(node) {
@@ -197,8 +196,6 @@ function enlargeFont(node) {
       return false;
     }
   }
-
-
 
   // 初始處理所有文字元素
   function processAll() {
