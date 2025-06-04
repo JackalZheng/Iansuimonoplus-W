@@ -14,7 +14,7 @@
   'use strict';
 
   // 排除編輯頁面
-  const editPattern = /\/(edit|editor|write|compose|admin|dashboard|blob)\b/i;
+  const editPattern = /\/(edit|editor|write|compose|admin|dashboard|blob|app|generate)\b/i;
   if (editPattern.test(location.pathname)) return;
 
   // 注入自訂字型
