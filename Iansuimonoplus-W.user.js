@@ -64,14 +64,14 @@
 
   `);
 
-  // 動態加大字體 2px（實測建議加 0.5px）
-  function enlargeFont(node) {
+  // 動態加大字體
+function enlargeFont(node) {
     if (
-      node.nodeType !== 1 ||
-      node.matches(iconFontSelector) ||
-      node.matches(iconClassSelector) ||
-      !node.matches(textElements) ||
-      node.dataset.fontEnlarged === '1'
+        node.nodeType !== 1 ||
+        node.matches(iconFontSelector) ||
+        node.matches(iconClassSelector) ||
+        !node.matches(textElements) ||
+        node.dataset.fontEnlarged === '1'
     ) return;
 
     const style = window.getComputedStyle(node);
@@ -83,9 +83,13 @@
     const px = parseFloat(size);
     if (isNaN(px)) return;
 
-    node.style.fontSize = (px + 0.5) + 'px';
+    // Adjust font size based on device type
+    const increaseAmount = /Mobi|Android|iPhone/i.test(navigator.userAgent) ? 0.05 : 0.3;
+
+    node.style.fontSize = (px + increaseAmount) + 'px';
     node.dataset.fontEnlarged = '1';
-  }
+}
+
 
   // 初始處理所有文字元素
   function processAll() {
