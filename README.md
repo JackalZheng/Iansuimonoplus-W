@@ -6,7 +6,7 @@ Iansuimonoplus-W.ttf
 
 貼近台灣（或我印象中）的筆順
 
-使用OpenCC及字型維護的一簡多繁字串轉換表
+使用OpenCC及自行維護的一簡多繁字串轉換表
 
 1.應該是涵蓋所有unicode中的簡轉繁了
 
