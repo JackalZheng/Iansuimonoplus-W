@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Iansuimonoplus-W 全站字型替換
 // @namespace    https://github.com/JackalZheng/Iansuimonoplus-W
-// @version      3.0
+// @version      3.1
 // @description  全站中英日韓字型統一為 Iansuimonoplus-W，支援 emoji，分桌機/手機字體大小，完全避開 icon/symbol 類型字型與 class，排除編輯頁面，動態監控 DOM
 // @author       JackalZheng
 // @match        *://*/*
