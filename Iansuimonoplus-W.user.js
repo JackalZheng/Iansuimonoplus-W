@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         全站字型替換
 // @namespace    http://tampermonkey.net/
-// @version      1.7
+// @version      1.71
 // @description  全站中英日韓字型統一為 Iansuimonoplus-W，排除 icon 與編輯頁面，字體比原本大2px
 // @author       J
 // @downloadURL  https://github.com/JackalZheng/Iansuimonoplus-W/raw/refs/heads/main/Iansuimonoplus-W.user.js
@@ -89,7 +89,6 @@ function enlargeFont(node) {
     node.style.fontSize = (px + increaseAmount) + 'px';
     node.dataset.fontEnlarged = '1';
 }
-
 
   // 初始處理所有文字元素
   function processAll() {
