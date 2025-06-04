@@ -3,7 +3,7 @@
 // @namespace    https://github.com/JackalZheng/Iansuimonoplus-W
 // @version      3.0
 // @description  全站中英日韓字型統一為 Iansuimonoplus-W，支援 emoji，分桌機/手機字體大小，完全避開 icon/symbol 類型字型與 class，排除編輯頁面，動態監控 DOM
-// @author       zozovo & JackalZheng & J
+// @author       JackalZheng
 // @match        *://*/*
 // @run-at       document-start
 // @grant        GM_addStyle
@@ -14,6 +14,23 @@
   'use strict';
 
   // ====== 可自訂參數區 ======
+        // 字體縮放比例（1為正常大小）
+    const fontScale = 1.0;
+        // 判斷是否為手機
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+    // 設定字體大小
+    const fontSize = isMobile ? 'calc(${fontScale} + 0.6px)' : 'calc(${fontScale})';
+
+    // 字體描邊寬度(px)，0為無描邊
+    const fontStrokeWidth = 0.3;
+    // 字體描邊顏色
+    const fontStrokeColor = 'rgba(0, 0, 0, 0.15)';
+    // 字體陰影，格式：offset-x offset-y blur-radius color
+    const fontShadow = '1px 1px 1.5px rgba(0, 0, 0, 0.25)';
+    // 字體平滑設置，webkit內核支持
+    const fontSmooth = 'subpixel-antialiased'; // 可用值: none, antialiased, subpixel-antialiased
+
   const editPageKeywords = [
     'edit', 'editor', 'write', 'compose', 'admin', 'dashboard', 'blob', 'app', 'generate'
   ];
@@ -39,11 +56,6 @@
     'li', 'td', 'th', 'label', 'a', 'div', 'input',
     'textarea', 'span', 'em', 'strong', 'info', 'b', 'u'
   ];
-
-  // 桌機與手機字體加大 px 數
-  const fontIncreaseDesktopPx = 100% + 0.5;
-  const fontIncreaseMobilePx = 100% + 0.05;
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
   // Emoji unicode 範圍
   const EMOJIS_UNICODE_RANGE =
@@ -93,6 +105,10 @@
       font-family: "Courier New";
       src: local("Iansuimonoplus-W");
     }
+        @font-face {
+      font-family: "Courier";
+      src: local("Iansuimonoplus-W");
+    }
     :root {
       --icon-font-family: "Color Emoji", "Monochrome Emoji";
       --generic-font-family: "Iansuimonoplus-W";
@@ -107,10 +123,15 @@
         'Material Icons', 'Material Symbols', 'FontAwesome', 'Segoe UI Symbol',
         'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', 'Twemoji',
         'EmojiOne', 'Symbola', sans-serif !important;
-      -webkit-font-smoothing: antialiased !important;
-      -moz-osx-font-smoothing: grayscale !important;
-      text-rendering: optimizeLegibility !important;
+                    font-size: ${fontSize} !important;
+            -webkit-font-smoothing: ${fontSmooth} !important;
+            -moz-osx-font-smoothing: grayscale !important;
+            text-shadow: ${fontShadow} !important;
+            /* 字體描邊 */
+            -webkit-text-stroke-width: ${fontStrokeWidth}px !important;
+            -webkit-text-stroke-color: ${fontStrokeColor} !important;
     }
+
   `);
 
   // 判斷是否為 icon 字型
@@ -123,32 +144,19 @@
 
       // 動態加大字體
 function enlargeFont(node) {
-    try {
-        if (
-            node.nodeType !== 1 ||
-            node.dataset.fontEnlarged === '1' ||
-            !isTextElement(node) ||
-            hasIconClass(node) ||
-            shouldExclude(node)
-        ) return;
+    // 建立新的樣式表
+    const style = document.createElement('style');
+    style.type = 'text/css';
+    style.textContent = `
+        /* 針對粗體字的優化 */
+        strong, b {
+            font-weight: 600 !important;
+            -webkit-text-stroke-width: ${fontStrokeWidth}px !important;
+        }
+    `;
 
-        const style = window.getComputedStyle(node);
-        if (style.display === 'none' || style.visibility === 'hidden') return;
-
-        const size = style.fontSize;
-        if (!size.endsWith('px')) return;
-
-        const px = parseFloat(size);
-        if (isNaN(px) || px <= 0) return;
-
-        const increaseAmount = isMobile ? fontIncreaseMobilePx : fontIncreaseDesktopPx;
-
-        // 避免外部 CSS 限制，允許動態調整
-        node.style.cssText += `font-size: ${px + increaseAmount}px !important;`;
-        node.dataset.fontEnlarged = '1';
-    } catch (e) {
-        console.error("字體調整錯誤: ", e);
-    }
+    // 將樣式表加入到頁面中
+    document.head.appendChild(style);
 }
 
 
