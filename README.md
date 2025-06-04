@@ -17,6 +17,11 @@ Iansuimonoplus-W.ttf
 4.中國常用詞不轉換 鼠标-鼠標
 
 
+https://github.com/ButTaiwan/iansui
+https://github.com/lxgw/LxgwWenKai
+https://github.com/powerline/fonts/tree/master/AnonymousPro
+https://github.com/BYVoid/OpenCC
+
 =======================================================
 
 TamperMonkey腳本
