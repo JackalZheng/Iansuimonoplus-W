@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Iansuimonoplus-W 全站字型替換
 // @namespace    https://github.com/JackalZheng/Iansuimonoplus-W
-// @version      4.0
+// @version      4.1
 // @description  全站中英日韓字型統一為 Iansuimonoplus-W
 // @author       JackalZheng
 // @match        *://*/*
@@ -14,8 +14,6 @@
   'use strict';
 
   // ====== 可自訂參數區 ======
-  // 字體縮放比例（1為正常大小）
-  const fontScale = 1;
   // 字體描邊寬度(px)，0為無描邊
   const fontStrokeWidth = 0.3;
   // 字體描邊顏色
@@ -89,9 +87,6 @@
     const style = document.createElement('style');
     style.type = 'text/css';
     style.textContent = `
-body {
-  font-size-adjust: 0.5; /* 根據字體 x-height 比例調整 */
-}
                 ${textElements.join(',')} {
            src: local('Iansuimonoplus-W'),
            url('https://github.com/JackalZheng/Iansuimonoplus-W/raw/refs/heads/main/Iansuimonoplus-W-Regular.woff2') format('woff2');
@@ -99,7 +94,7 @@ body {
            font-display: swap;
            unicode-range: ${UNICODE_RANGE};
             /* 字體調整 */
-            font-size: ${fontSize} !important;
+            font-size-adjust: 0.5 !important;
             -webkit-font-smoothing: ${fontSmooth} !important;
             -moz-osx-font-smoothing: grayscale !important;
             text-shadow: ${fontShadow} !important;
