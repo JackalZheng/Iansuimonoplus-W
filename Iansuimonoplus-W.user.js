@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Iansuimonoplus-W 全站字型替換
 // @namespace    https://github.com/JackalZheng/Iansuimonoplus-W
-// @version      4.2
+// @version      4.3
 // @description  全站中英日韓字型統一為 Iansuimonoplus-W，排除 icon/symbol 類別
 // @author       JackalZheng
 // @match        *://*/*
@@ -119,7 +119,7 @@ ${iconSelectors} {
 
 /* 5. 強化粗體字 */
 strong, b {
-    font-weight: 600 !important;
+    font-weight: 700 !important;
     -webkit-text-stroke-width: ${fontStrokeWidth}px !important;
 }
 `;
