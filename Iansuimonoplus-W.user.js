@@ -16,12 +16,6 @@
   // ====== 可自訂參數區 ======
   // 字體縮放比例（1為正常大小）
   const fontScale = 1;
-  // 判斷是否為手機
-  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
-  // 設定字體大小
-  const fontSize = isMobile ? 'calc(${fontScale} + 0.6px)' : 'calc(${fontScale})';
-
   // 字體描邊寬度(px)，0為無描邊
   const fontStrokeWidth = 0.3;
   // 字體描邊顏色
@@ -95,7 +89,9 @@
     const style = document.createElement('style');
     style.type = 'text/css';
     style.textContent = `
-
+body {
+  font-size-adjust: 0.5; /* 根據字體 x-height 比例調整 */
+}
                 ${textElements.join(',')} {
            src: local('Iansuimonoplus-W'),
            url('https://github.com/JackalZheng/Iansuimonoplus-W/raw/refs/heads/main/Iansuimonoplus-W-Regular.woff2') format('woff2');
