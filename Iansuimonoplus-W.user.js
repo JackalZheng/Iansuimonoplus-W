@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Iansuimonoplus-W 全網字型替換
 // @namespace    https://github.com/JackalZheng/Iansuimonoplus-W
-// @version      5.02
+// @version      5.03
 // @description  全網中英日韓字型統一為 Iansuimonoplus-W
 // @author       JackalZheng
 // @match        *://*/*
@@ -81,14 +81,14 @@
     // 合併所有排除選擇器
     const iconSelectors = iconClassSelectors.concat(iconPrefixSelectors).join(', ');
 const isMobile = window.innerWidth <= 768; // 判斷是否為手機
-const fontFamily = isMobile ? `''` : ` sans-serif, ${iconFonts.join(', ') }`;
+const fontFamily = isMobile ? `` : ` sans-serif, ${iconFonts.join(', ') }`;
 
     // --------- 樣式表內容 ---------
     const styleContent = `
 
 @font-face {
-  font-family: '${FONT_NAME}';
-  src: local('${FONT_NAME}'), url('${FONT_URL}') format('woff2');
+  font-family: 'Iansuimonoplus-W';
+  src: local('Iansuimonoplus-W'), url('${FONT_URL}') format('woff2');
   font-display: swap;
   unicode-range: U+0020-007E, U+00A0-00FF, U+2E80-2EFF, U+3000-303F,
                  U+3040-309F, U+30A0-30FF, U+4E00-9FFF, U+AC00-D7AF;
@@ -96,7 +96,7 @@ const fontFamily = isMobile ? `''` : ` sans-serif, ${iconFonts.join(', ') }`;
 
 /* 2. 主要文字元素統一字型與樣式 */
   ${textElements.join(', ')}:not(${iconSelectors}) {
-    font-family: ${FONT_NAME} , ${fontFamily} !important;
+    font-family: Iansuimonoplus-W , ${fontFamily} !important;
   font-size-adjust: cap-height 0.69 !important;
   -webkit-font-smoothing: ${fontSmooth} !important;
   -moz-osx-font-smoothing: grayscale !important;
