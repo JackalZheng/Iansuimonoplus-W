@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Iansuimonoplus-W 全網字型替換
 // @namespace    https://github.com/JackalZheng/Iansuimonoplus-W
-// @version      5.03
+// @version      5.04
 // @description  全網中英日韓字型統一為 Iansuimonoplus-W
 // @author       JackalZheng
 // @match        *://*/*
@@ -29,7 +29,7 @@
 
     // icon/symbol 字型
     const iconFonts = [
-        'Apple Symbols', 'Bootstrap Icons', 'Font Awesome', 'Ionicons',
+        'Apple Symbols', 'Bootstrap Icons', 'Font Awesome', 'Ionicons', 'sans-serif',
         'Material Icons', 'Noto Color Emoji', 'SF Pro Icons', 'Segoe Fluent Icons',
         'Segoe MDL2 Assets', 'Segoe UI Symbol', 'Apple Color Emoji', 'EmojiOne',
         'FontAwesome', 'Glyphicons', 'Google Symbols', 'Material Symbols',
@@ -81,7 +81,7 @@
     // 合併所有排除選擇器
     const iconSelectors = iconClassSelectors.concat(iconPrefixSelectors).join(', ');
 const isMobile = window.innerWidth <= 768; // 判斷是否為手機
-const fontFamily = isMobile ? `Iansuimonoplus-W` : `Iansuimonoplus-W, sans-serif, ${iconFonts.join(', ') }`;
+const fontFamily = isMobile ? `` : `${iconFonts.join(', ')}`;
 
     // --------- 樣式表內容 ---------
     const styleContent = `
@@ -96,7 +96,7 @@ const fontFamily = isMobile ? `Iansuimonoplus-W` : `Iansuimonoplus-W, sans-serif
 
 /* 2. 主要文字元素統一字型與樣式 */
   ${textElements.join(', ')}:not(${iconSelectors}) {
-    font-family:  ${fontFamily} !important;
+    font-family:  'Iansuimonoplus-W', ${fontFamily} !important;
   font-size-adjust: cap-height 0.69 !important;
   -webkit-font-smoothing: ${fontSmooth} !important;
   -moz-osx-font-smoothing: grayscale !important;
