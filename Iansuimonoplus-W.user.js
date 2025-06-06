@@ -81,7 +81,7 @@
     // 合併所有排除選擇器
     const iconSelectors = iconClassSelectors.concat(iconPrefixSelectors).join(', ');
 const isMobile = window.innerWidth <= 768; // 判斷是否為手機
-const fontFamily = isMobile ? `` : ` sans-serif, ${iconFonts.join(', ') }`;
+const fontFamily = isMobile ? `Iansuimonoplus-W` : `Iansuimonoplus-W, sans-serif, ${iconFonts.join(', ') }`;
 
     // --------- 樣式表內容 ---------
     const styleContent = `
@@ -96,7 +96,7 @@ const fontFamily = isMobile ? `` : ` sans-serif, ${iconFonts.join(', ') }`;
 
 /* 2. 主要文字元素統一字型與樣式 */
   ${textElements.join(', ')}:not(${iconSelectors}) {
-    font-family: Iansuimonoplus-W , ${fontFamily} !important;
+    font-family:  ${fontFamily} !important;
   font-size-adjust: cap-height 0.69 !important;
   -webkit-font-smoothing: ${fontSmooth} !important;
   -moz-osx-font-smoothing: grayscale !important;
