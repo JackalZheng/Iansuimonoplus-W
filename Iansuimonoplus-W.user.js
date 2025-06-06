@@ -15,19 +15,20 @@
 
     // ====== 可自訂參數區 ======
     const FONT_NAME = 'Iansuimonoplus-W';
-const FONT_URL = 'https://github.com/JackalZheng/Iansuimonoplus-W/raw/refs/heads/main/Iansuimonoplus-W-Regular.woff2';
-    const fontStrokeWidth = 0.3;
-    const fontStrokeColor = 'rgba(0, 0, 0, 0.15)';
-    const fontShadow = '1px 1px 1.5px rgba(0, 0, 0, 0.25)';
-    const fontSmooth = 'antialiased'; // 可用值: none, antialiased, subpixel-antialiased
+    const FONT_URL = 'https://github.com/JackalZheng/Iansuimonoplus-W/raw/refs/heads/main/Iansuimonoplus-W-Regular.woff2';
 
+    const fontStrokeWidth = 0.3;
+    const fontStrokeColor = 'rgba(0,0,0,0.15)';
+    const fontShadowLight = '1px 1px 1.5px rgba(0,0,0,0.25)';
+    const fontShadowDark = '1px 1px 1.5px rgba(255,255,255,0.15)';
+    const fontSmooth = 'antialiased';
     const editPageKeywords = [
         'edit', 'editor', 'write', 'compose', 'admin', 'dashboard', 'blob', 'app', 'generate'
     ];
     const editPattern = new RegExp(`/(${editPageKeywords.join('|')})\\b`, 'i');
 
     // icon/symbol 字型
-    const iconFontFamilies = [
+    const iconFonts = [
         'Apple Symbols', 'Bootstrap Icons', 'Font Awesome', 'Ionicons',
         'Material Icons', 'Noto Color Emoji', 'SF Pro Icons', 'Segoe Fluent Icons',
         'Segoe MDL2 Assets', 'Segoe UI Symbol', 'Apple Color Emoji', 'EmojiOne',
@@ -46,7 +47,7 @@ const FONT_URL = 'https://github.com/JackalZheng/Iansuimonoplus-W/raw/refs/heads
     const textElements = [
         'body', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
         'li', 'td', 'th', 'label', 'a', 'div', 'input',
-        'textarea', 'span', 'em', 'strong', 'info', 'b', 'u'
+        'textarea', 'span', 'em', 'strong', 'info', 'b', 'u', 'i'
     ];
 
     // unicode 範圍
@@ -85,7 +86,6 @@ const fontFamily = isMobile ? `''` : ` sans-serif, ${iconFonts.join(', ') }`;
     // --------- 樣式表內容 ---------
     const styleContent = `
 
-/* 1. 設定 html 載入自訂字型 */
 @font-face {
   font-family: '${FONT_NAME}';
   src: local('${FONT_NAME}'), url('${FONT_URL}') format('woff2');
@@ -106,28 +106,6 @@ const fontFamily = isMobile ? `''` : ` sans-serif, ${iconFonts.join(', ') }`;
   -webkit-text-stroke-color: ${fontStrokeColor};
 }
 
-/* 3. emoji 範圍排除：用原生字型 */
-* {
-    font-family: inherit !important;
-    unicode-range: ${EMOJIS_UNICODE_RANGE};
-}
-
-/* 4. 排除 icon/symbol class：恢復預設字型與樣式 */
-${iconSelectors} {
-    font-family: ${iconFontFamilies} !important;
-    text-shadow: none !important;
-    -webkit-text-stroke-width: 0 !important;
-    -webkit-text-stroke-color: initial !important;
-    font-style: initial !important;
-    font-weight: initial !important;
-    letter-spacing: initial !important;
-}
-
-/* 5. 強化粗體字 */
-strong, b {
-    font-weight: 600 !important;
-    -webkit-text-stroke-width: ${fontStrokeWidth}px !important;
-}
 `;
 
     // --------- 注入樣式 ---------
