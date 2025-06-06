@@ -92,9 +92,7 @@ html {
 ${textElements.join(', ')} {
     font-family: 'Iansuimonoplus-W', ${iconFontFamilies} !important;
     font-size-adjust: cap-height 0.69 !important;
-    letter-spacing: 1px !important; /* 字元間距為字體大小的0.1倍 */
-    /word-spacing: 0.01px !important; /* 單字間距為字體大小的0.5倍 */
-     / line-height: 150% !important; /* 行高為字體大小的120% */
+    letter-spacing: 1px !important; 
     -webkit-font-smoothing: ${fontSmooth} !important;
     -moz-osx-font-smoothing: grayscale !important;
     text-shadow: ${fontShadow} !important;
