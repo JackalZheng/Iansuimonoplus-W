@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Iansuimonoplus-W 全站字型替換
+// @name         Iansuimonoplus-W 全網字型替換
 // @namespace    https://github.com/JackalZheng/Iansuimonoplus-W
-// @version      4.31
-// @description  全站中英日韓字型統一為 Iansuimonoplus-W，排除 icon/symbol 類別
+// @version      5.0
+// @description  全網中英日韓字型統一為 Iansuimonoplus-W
 // @author       JackalZheng
 // @match        *://*/*
 // @run-at       document-start
