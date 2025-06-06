@@ -14,6 +14,8 @@
     'use strict';
 
     // ====== 可自訂參數區 ======
+    const FONT_NAME = 'Iansuimonoplus-W';
+const FONT_URL = 'https://github.com/JackalZheng/Iansuimonoplus-W/raw/refs/heads/main/Iansuimonoplus-W-Regular.woff2';
     const fontStrokeWidth = 0.3;
     const fontStrokeColor = 'rgba(0, 0, 0, 0.15)';
     const fontShadow = '1px 1px 1.5px rgba(0, 0, 0, 0.25)';
@@ -77,27 +79,31 @@
         .map(cls => `[class^="${cls}"], [class*=" ${cls}"]`);
     // 合併所有排除選擇器
     const iconSelectors = iconClassSelectors.concat(iconPrefixSelectors).join(', ');
+const isMobile = window.innerWidth <= 768; // 判斷是否為手機
+const fontFamily = isMobile ? `''` : ` sans-serif, ${iconFonts.join(', ') }`;
 
     // --------- 樣式表內容 ---------
     const styleContent = `
 
 /* 1. 設定 html 載入自訂字型 */
-html {
-    font-family: 'Iansuimonoplus-W';
-    src: local('Iansuimonoplus-W'),
-         url('https://github.com/JackalZheng/Iansuimonoplus-W/raw/refs/heads/main/Iansuimonoplus-W-Regular.woff2') format('woff2');
-    font-display: swap;
+@font-face {
+  font-family: '${FONT_NAME}';
+  src: local('${FONT_NAME}'), url('${FONT_URL}') format('woff2');
+  font-display: swap;
+  unicode-range: U+0020-007E, U+00A0-00FF, U+2E80-2EFF, U+3000-303F,
+                 U+3040-309F, U+30A0-30FF, U+4E00-9FFF, U+AC00-D7AF;
 }
+
 /* 2. 主要文字元素統一字型與樣式 */
-${textElements.join(', ')} {
-    font-family: 'Iansuimonoplus-W', ${iconFontFamilies} !important;
-    font-size-adjust: cap-height 0.69 !important;
-    letter-spacing: 1px !important; 
-    -webkit-font-smoothing: ${fontSmooth} !important;
-    -moz-osx-font-smoothing: grayscale !important;
-    text-shadow: ${fontShadow} !important;
-    -webkit-text-stroke-width: ${fontStrokeWidth}px !important;
-    -webkit-text-stroke-color: ${fontStrokeColor} !important;
+  ${textElements.join(', ')}:not(${iconSelectors}) {
+    font-family: ${FONT_NAME} , ${fontFamily} !important;
+  font-size-adjust: cap-height 0.69 !important;
+  -webkit-font-smoothing: ${fontSmooth} !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  text-rendering: optimizeLegibility !important;
+  text-shadow: ${fontShadowLight};
+  -webkit-text-stroke-width: ${fontStrokeWidth}px;
+  -webkit-text-stroke-color: ${fontStrokeColor};
 }
 
 /* 3. emoji 範圍排除：用原生字型 */
