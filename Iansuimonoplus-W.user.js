@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Iansuimonoplus-W 全網字型替換
 // @namespace    https://github.com/JackalZheng/Iansuimonoplus-W
-// @version      5.0
+// @version      5.01
 // @description  全網中英日韓字型統一為 Iansuimonoplus-W
 // @author       JackalZheng
 // @match        *://*/*
@@ -104,6 +104,11 @@ const fontFamily = isMobile ? `''` : ` sans-serif, ${iconFonts.join(', ') }`;
   text-shadow: ${fontShadowLight};
   -webkit-text-stroke-width: ${fontStrokeWidth}px;
   -webkit-text-stroke-color: ${fontStrokeColor};
+}
+
+/* 為 icon 類元素恢復原始字型 */
+${iconSelectors} {
+  font-family: ${iconFontFamilies.join(', ')}, inherit !important;
 }
 
 `;
