@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Iansuimonoplus-W 全站字型替換
 // @namespace    https://github.com/JackalZheng/Iansuimonoplus-W
-// @version      4.3
+// @version      4.31
 // @description  全站中英日韓字型統一為 Iansuimonoplus-W，排除 icon/symbol 類別
 // @author       JackalZheng
 // @match        *://*/*
@@ -80,6 +80,7 @@
 
     // --------- 樣式表內容 ---------
     const styleContent = `
+
 /* 1. 設定 html 載入自訂字型 */
 html {
     font-family: 'Iansuimonoplus-W';
@@ -87,11 +88,13 @@ html {
          url('https://github.com/JackalZheng/Iansuimonoplus-W/raw/refs/heads/main/Iansuimonoplus-W-Regular.woff2') format('woff2');
     font-display: swap;
 }
-
 /* 2. 主要文字元素統一字型與樣式 */
 ${textElements.join(', ')} {
-    font-family: 'Iansuimonoplus-W', ${iconFontFamilies.map(f => `'${f}'`).join(', ')} !important;
-    font-size-adjust: cap-height 0.7 !important;
+    font-family: 'Iansuimonoplus-W', ${iconFontFamilies} !important;
+    font-size-adjust: cap-height 0.69 !important;
+    letter-spacing: 1px !important; /* 字元間距為字體大小的0.1倍 */
+    /word-spacing: 0.01px !important; /* 單字間距為字體大小的0.5倍 */
+     / line-height: 150% !important; /* 行高為字體大小的120% */
     -webkit-font-smoothing: ${fontSmooth} !important;
     -moz-osx-font-smoothing: grayscale !important;
     text-shadow: ${fontShadow} !important;
@@ -107,8 +110,7 @@ ${textElements.join(', ')} {
 
 /* 4. 排除 icon/symbol class：恢復預設字型與樣式 */
 ${iconSelectors} {
-    font-family: initial !important;
-    font-size: initial !important;
+    font-family: ${iconFontFamilies} !important;
     text-shadow: none !important;
     -webkit-text-stroke-width: 0 !important;
     -webkit-text-stroke-color: initial !important;
@@ -119,7 +121,7 @@ ${iconSelectors} {
 
 /* 5. 強化粗體字 */
 strong, b {
-    font-weight: 700 !important;
+    font-weight: 600 !important;
     -webkit-text-stroke-width: ${fontStrokeWidth}px !important;
 }
 `;
