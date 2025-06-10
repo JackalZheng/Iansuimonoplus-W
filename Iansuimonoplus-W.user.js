@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Iansuimonoplus-W 全網字型替換
 // @namespace    https://github.com/JackalZheng/Iansuimonoplus-W
-// @version      5.04
+// @version      5.10
 // @description  全網中英日韓字型統一為 Iansuimonoplus-W
 // @author       JackalZheng
 // @match        *://*/*
