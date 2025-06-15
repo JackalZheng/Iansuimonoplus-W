@@ -66,7 +66,11 @@
   src: url('${FONT_URL}') format('woff2');
   font-display: swap;
 }
-
+@font-face {
+  font-family: '$(FONT_NAME2)';
+  src: url('${FONT_URL2}') format('woff2');
+  font-display: swap;
+}
 /* 2. 主要文字元素統一字型與樣式 */
   *:not(${iconSelectors}) {
   font-family: ${FONT_NAME},${FONT_NAME2}, ${iconFonts} !important;
