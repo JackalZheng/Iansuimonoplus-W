@@ -16,8 +16,6 @@
     // ====== 可自訂參數區 ======
     const FONT_NAME = 'Iansuimonoplus-W';
     const FONT_URL = 'https://github.com/JackalZheng/Iansuimonoplus-W/raw/refs/heads/main/Iansuimonoplus-W-Regular.woff2';
-    const FONT_NAME2 = 'Iansuimonoplus';
-    const FONT_URL2 = 'https://github.com/JackalZheng/Iansuimonoplus/raw/refs/heads/main/Iansuimonoplus-Regular.woff2';
 
     const fontStrokeWidth = 0.3;
     const fontStrokeColor = 'rgba(0,0,0,0.15)';
@@ -66,14 +64,10 @@
   src: url('${FONT_URL}') format('woff2');
   font-display: swap;
 }
-@font-face {
-  font-family: '$(FONT_NAME2)';
-  src: url('${FONT_URL2}') format('woff2');
-  font-display: swap;
-}
-/* 2. 主要文字元素統一字型與樣式 */
+
+/* 主要文字元素統一字型與樣式 */
   *:not(${iconSelectors}) {
-  font-family: ${FONT_NAME},${FONT_NAME2}, ${iconFonts} !important;
+  font-family: ${FONT_NAME}, ${iconFonts} !important;
   font-size-adjust: cap-height 0.7 !important;
   -webkit-font-smoothing: ${fontSmooth} !important;
   -moz-osx-font-smoothing: grayscale !important;
