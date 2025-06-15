@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Iansuimonoplus-W 全網字型替換
 // @namespace    https://github.com/JackalZheng/Iansuimonoplus-W
-// @version      5.11
+// @version      5.12
 // @description  全網中英日韓字型統一為 Iansuimonoplus-W
 // @author       JackalZheng
 // @match        *://*/*
@@ -16,6 +16,8 @@
     // ====== 可自訂參數區 ======
     const FONT_NAME = 'Iansuimonoplus-W';
     const FONT_URL = 'https://github.com/JackalZheng/Iansuimonoplus-W/raw/refs/heads/main/Iansuimonoplus-W-Regular.woff2';
+    const FONT_NAME2 = 'Iansuimonoplus';
+    const FONT_URL2 = 'https://github.com/JackalZheng/Iansuimonoplus/raw/refs/heads/main/Iansuimonoplus-Regular.woff2';
 
     const fontStrokeWidth = 0.3;
     const fontStrokeColor = 'rgba(0,0,0,0.15)';
@@ -67,7 +69,7 @@
 
 /* 2. 主要文字元素統一字型與樣式 */
   *:not(${iconSelectors}) {
-  font-family: ${FONT_NAME}, ${iconFonts} !important;
+  font-family: ${FONT_NAME},${FONT_NAME2}, ${iconFonts} !important;
   font-size-adjust: cap-height 0.7 !important;
   -webkit-font-smoothing: ${fontSmooth} !important;
   -moz-osx-font-smoothing: grayscale !important;
