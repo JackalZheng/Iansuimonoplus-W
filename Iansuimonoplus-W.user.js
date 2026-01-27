@@ -1,88 +1,61 @@
 // ==UserScript==
-// @name         Iansuimonoplus-W 全網字型替換
-// @namespace    https://github.com/JackalZheng/Iansuimonoplus-W
-// @version      5.12
-// @description  全網中英日韓字型統一為 Iansuimonoplus-W
-// @author       JackalZheng
+
+// @name         全網頁替換字體 (繞過 CSP 限制版)
+
+// @namespace    http://tampermonkey.net/
+
+// @version      1.1
+
+// @description  使用 @resource 繞過 Yahoo 等網站的 CSP 限制
+
+// @author       Gemini
+
 // @match        *://*/*
-// @run-at       document-start
+
 // @grant        GM_addStyle
-// @license      MIT
+
+// @grant        GM_getResourceURL
+
+// @resource     MY_FONT https://github.com/JackalZheng/Iansuimonoplus-W/raw/refs/heads/main/Iansuimonoplus-W-Regular.woff2
+
+// @run-at       document-start
+
 // ==/UserScript==
 
-(function () {
+(function() {
+
     'use strict';
 
-    // ====== 可自訂參數區 ======
-    const FONT_NAME = 'Iansuimonoplus-W';
-    const FONT_URL = 'https://github.com/JackalZheng/Iansuimonoplus-W/raw/refs/heads/main/Iansuimonoplus-W-Regular.woff2';
+    // 取得預載入字體的 Data URL (Base64)
 
-    const fontStrokeWidth = 0.3;
-    const fontStrokeColor = 'rgba(0,0,0,0.15)';
-    const fontShadowLight = '1px 1px 1.5px rgba(0,0,0,0.25)';
-    const fontShadowDark = '1px 1px 1.5px rgba(255,255,255,0.15)';
-    const fontSmooth = 'antialiased';
+    const fontUrl = GM_getResourceURL('MY_FONT');
 
-    // icon/symbol 字型
-    const iconFonts = [
-'Apple Color Emoji','Apple Symbols','Arial','Bootstrap Icons',
-'Bowtie','EmojiOne','Font Awesome','FontAwesome',
-'Glyphicons','Google Symbols','Ionicons','MWF-MDL2',
-'Material Icons Extended','Material Icons','Material Symbols','Microsoft JhengHei',
-'Noto Color Emoji','SF Pro Icons','Segoe Fluent Icons','Segoe MDL2 Assets',
-'Segoe UI Emoji','Segoe UI Symbol','Symbola','Twemoji',
-'fontAwesome','global-iconfont','iconfont','iknow-qb_share_icons',
-'mui-act-font','myfont','office365icons','review-iconfont',
-'stonefont','tm-detail-font','sans-serif'
-    ];
+    const fontName = 'IansuimonoplusW';
 
-    // icon/symbol class（包含前綴）
-    const iconClassList = [
-'audio','code','control','fa','fa-',
-'gm2-','hwic','icon','icon-fluent','logo',
-'maps-sprite','material-icons','mi','music','musicBox',
-'musicControlIcon','musicControl_play','musicSpeedBox',
-'musicSpeedControl','musicTime','next','play','stop',
-'prev','speedSet','symbol','video'
-    ];
+    const css = `
 
-    // --------- 排除 icon/symbol class 的 CSS 選擇器 ---------
-    // 完整 class
-    const iconClassSelectors = iconClassList.map(cls => `.${cls}`);
-    // 前綴 class（支援 [class^=]、[class*=]）
-    const iconPrefixSelectors = iconClassList
-        .filter(cls => cls.endsWith('-'))
-        .map(cls => `[class^="${cls}"], [class*=" ${cls}"]`);
-    // 合併所有排除選擇器
-    const iconSelectors = iconClassSelectors.concat(iconPrefixSelectors).join(', ');
+        @font-face {
 
-    // --------- 樣式表內容 ---------
-    const styleContent = `
+            font-family: '${fontName}';
 
-@font-face {
-  font-family: '$(FONT_NAME)';
-  src: url('${FONT_URL}') format('woff2');
-  font-display: swap;
-}
+            src: url('${fontUrl}') format('woff2');
 
-/* 主要文字元素統一字型與樣式 */
-  *:not(${iconSelectors}) {
-  font-family: ${FONT_NAME}, ${iconFonts} !important;
-  font-size-adjust: cap-height 0.7 !important;
-  -webkit-font-smoothing: ${fontSmooth} !important;
-  -moz-osx-font-smoothing: grayscale !important;
-  text-rendering: optimizeLegibility !important;
-  text-shadow: ${fontShadowLight} !important;
-  -webkit-text-stroke-width: ${fontStrokeWidth}px !important;
-  -webkit-text-stroke-color: ${fontStrokeColor} !important;
-}
+            font-display: swap;
 
-`;
+        }
 
-    // --------- 注入樣式 ---------
-    const style = document.createElement('style');
-    style.type = 'text/css';
-    style.textContent = styleContent;
-    document.head.appendChild(style);
+        /* 強制套用到所有元素，並針對 Yahoo 等複雜結構加強覆蓋 */
+
+        html, body, p, div, span, a, input, button, textarea, section, article, h1, h2, h3, h4, h5, h6 {
+
+            font-family: '${fontName}', system-ui, -apple-system, "Microsoft JhengHei", sans-serif !important;
+
+        }
+
+    `;
+
+    // 使用 Tampermonkey 專用的 API 注入樣式，權限更高
+
+    GM_addStyle(css);
 
 })();
